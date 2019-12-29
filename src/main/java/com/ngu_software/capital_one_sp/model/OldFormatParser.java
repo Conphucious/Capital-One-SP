@@ -10,6 +10,8 @@ public class OldFormatParser {
 
 	private Pattern pt = Pattern.compile("(?<=Opening Balance )(.*\n?)(?=Closing Balance )", Pattern.DOTALL);
 	private Pattern pd = Pattern.compile("\\b(\\d{2}\\/\\d{2}\\/\\d{4})");
+	private Pattern pAct;
+	private Pattern pAmt = Pattern.compile("\\$(.*?)\\ ");
 
 	public OldFormatParser(Date d, String text) {
 		Document doc = new Document(d);
@@ -18,6 +20,11 @@ public class OldFormatParser {
 		for (int i = 1; i < transText.length; i++) {
 			Date date = findDate(transText[i]);
 			String activity = findActivity(date, transText[i]);
+			double amt = getAmount(transText[i]);
+			Category category = findCategory(transText[i]) ? Category.DEBIT : Category.CREDIT;
+			
+			
+			System.out.println(amt);
 			
 //			Transaction t = new Transaction(date, activity);
 
@@ -35,23 +42,38 @@ public class OldFormatParser {
 	}
 
 	private Date findDate(String text) {
-		Date date = null;
 		Matcher m = pd.matcher(text);
-		while (m.find()) {
-			date = createDate(text.substring(m.start(), m.end()));
-		}
-		return date;
+		
+		while (m.find())
+			return createDate(text.substring(m.start(), m.end()));
+		
+		return null;
 	}
 	
 	private String findActivity(Date date, String text) {
-		Pattern pActivity = Pattern.compile("([^" + new SimpleDateFormat("MM/dd/yyyy").format(date) + "]+)");
-		Matcher m = pActivity.matcher(text);
+		pAct = Pattern.compile("([^" + new SimpleDateFormat("MM/dd/yyyy").format(date) + "]+)");
+		Matcher m = pAct.matcher(text);
 		
-		while (m.find()) {
+		while (m.find())
 			return text.substring(m.start(), m.end() - 1);
-		}
 		
 		return null;
+	}
+	
+	private double getAmount(String text) {
+		Matcher m = pAmt.matcher(text);
+		while (m.find()) {
+			// find a way to replace () with -
+			double amt = Double.parseDouble(text.substring(m.start(), m.end() - 1));
+			
+			return 1;
+		}
+		
+		return 0;
+	}
+	
+	private boolean findCategory(String text) {
+		return true;
 	}
 
 	private Date createDate(String date) {
