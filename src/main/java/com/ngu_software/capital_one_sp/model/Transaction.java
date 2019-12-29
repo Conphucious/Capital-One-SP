@@ -8,6 +8,16 @@ public class Transaction {
 	private String description;
 	private Category category;
 	private double amount;
-	private double balance;
+	
+	public Transaction(Date date, String description, Category category, double amount) {
+		this.date = date;
+		this.description = description;
+		this.category = category;
+		this.amount = amount;
+	}
+
+	
+	
+	
 
 }
