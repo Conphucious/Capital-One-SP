@@ -63,10 +63,8 @@ public class OldFormatParser {
 	private double getAmount(String text) {
 		Matcher m = pAmt.matcher(text);
 		while (m.find()) {
-			// find a way to replace () with -
-			double amt = Double.parseDouble(text.substring(m.start(), m.end() - 1));
-			
-			return 1;
+			String amt = text.substring(m.start(), m.end() - 1).replace("$", "");
+			return amt.contains("(") ? Double.parseDouble(amt.replaceAll("[()]", "")) * -1 : Double.parseDouble(amt);
 		}
 		
 		return 0;
