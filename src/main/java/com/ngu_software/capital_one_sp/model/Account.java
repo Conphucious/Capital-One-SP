@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Account {
 	
-	private AccountType type;
-	private String name;
-	private int number;
+//	private AccountType type;
+//	private String name;
+//	private int number;
 	
 	private List<Document> docList;
 
