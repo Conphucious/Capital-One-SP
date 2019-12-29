@@ -18,17 +18,15 @@ public class OldFormatParser {
 		String[] transText = findTransactions(text);
 		
 		for (int i = 1; i < transText.length; i++) {
-			Date date = findDate(transText[i]);
-			String activity = findActivity(date, transText[i]);
+			Date date = getDate(transText[i]);
+			String activity = getActivity(date, transText[i]);
 			double amt = getAmount(transText[i]);
-			Category category = findCategory(transText[i]) ? Category.DEBIT : Category.CREDIT;
-			
-			
-			System.out.println(amt);
-			
-//			Transaction t = new Transaction(date, activity);
-
+			Category category = getCategory(amt);
+			Transaction t = new Transaction(date, activity, category, amt);
+			doc.addTransaction(t);
 		}
+		
+		System.out.println(doc);
 	}
 
 	private String[] findTransactions(String text) {
@@ -41,7 +39,7 @@ public class OldFormatParser {
 		return transText;
 	}
 
-	private Date findDate(String text) {
+	private Date getDate(String text) {
 		Matcher m = pd.matcher(text);
 		
 		while (m.find())
@@ -50,12 +48,12 @@ public class OldFormatParser {
 		return null;
 	}
 	
-	private String findActivity(Date date, String text) {
+	private String getActivity(Date date, String text) {
 		pAct = Pattern.compile("([^" + new SimpleDateFormat("MM/dd/yyyy").format(date) + "]+)");
 		Matcher m = pAct.matcher(text);
 		
 		while (m.find())
-			return text.substring(m.start(), m.end() - 1);
+			return text.substring(m.start(), m.end() - 1).trim();
 		
 		return null;
 	}
@@ -70,8 +68,8 @@ public class OldFormatParser {
 		return 0;
 	}
 	
-	private boolean findCategory(String text) {
-		return true;
+	private Category getCategory(double amount) {
+		return amount < 0 ? Category.CREDIT : Category.DEBIT;
 	}
 
 	private Date createDate(String date) {

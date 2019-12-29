@@ -19,5 +19,10 @@ public class Document {
 	public void addTransaction(Transaction t) {
 		transList.add(t);
 	}
+
+	@Override
+	public String toString() {
+		return "Document [date=" + date + ", transList=" + transList + "]";
+	}
 	
 }
