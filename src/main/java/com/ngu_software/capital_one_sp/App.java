@@ -7,6 +7,6 @@ import com.ngu_software.capital_one_sp.controller.Parser;
 
 public class App {
 	public static void main(String[] args) {
-		new Parser(new File("./"));
+		Parser p = new Parser(new File("./"));
 	}
 }

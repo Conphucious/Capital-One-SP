@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 
 public class OldFormatParser {
 
-	private Pattern pt = Pattern.compile("(?<=Opening Balance )(.*\n?)(?=Closing Balance )", Pattern.DOTALL);
-	private Pattern pd = Pattern.compile("\\b(\\d{2}\\/\\d{2}\\/\\d{4})");
-	private Pattern pAct;
-	private Pattern pAmt = Pattern.compile("\\$(.*?)\\ ");
+	private static Pattern pt = Pattern.compile("(?<=Opening Balance )(.*\n?)(?=Closing Balance )", Pattern.DOTALL);
+	private static Pattern pd = Pattern.compile("\\b(\\d{2}\\/\\d{2}\\/\\d{4})");
+	private static Pattern pAct;
+	private static Pattern pAmt = Pattern.compile("\\$(.*?)\\ ");
 	
-	public OldFormatParser(Date d, String text) {
+	public static Document parse(Date d, String text) {
 		Document doc = new Document(d);
 		String[] transText = findTransactions(text);
 		
@@ -27,9 +27,11 @@ public class OldFormatParser {
 		}
 		
 		System.out.println(doc);
+		
+		return doc;
 	}
 
-	private String[] findTransactions(String text) {
+	private static String[] findTransactions(String text) {
 		Matcher m = pt.matcher(text);
 		String[] transText = null;
 
@@ -39,7 +41,7 @@ public class OldFormatParser {
 		return transText;
 	}
 
-	private Date getDate(String text) {
+	private static Date getDate(String text) {
 		Matcher m = pd.matcher(text);
 		
 		while (m.find())
@@ -48,7 +50,7 @@ public class OldFormatParser {
 		return null;
 	}
 	
-	private String getActivity(Date date, String text) {
+	private static String getActivity(Date date, String text) {
 		pAct = Pattern.compile("([^" + new SimpleDateFormat("MM/dd/yyyy").format(date) + "]+)");
 		Matcher m = pAct.matcher(text);
 		
@@ -58,7 +60,7 @@ public class OldFormatParser {
 		return null;
 	}
 	
-	private double getAmount(String text) {
+	private static double getAmount(String text) {
 		Matcher m = pAmt.matcher(text);
 		while (m.find()) {
 			String amt = text.substring(m.start(), m.end() - 1).replace("$", "");
@@ -68,11 +70,11 @@ public class OldFormatParser {
 		return 0;
 	}
 	
-	private Category getCategory(double amount) {
+	private static Category getCategory(double amount) {
 		return amount < 0 ? Category.CREDIT : Category.DEBIT;
 	}
 
-	private Date createDate(String date) {
+	private static Date createDate(String date) {
 		try {
 			return new SimpleDateFormat("MM/dd/yyyy").parse(date);
 		} catch (ParseException e) {

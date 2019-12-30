@@ -4,20 +4,26 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 import com.ngu_software.capital_one_sp.CO;
+import com.ngu_software.capital_one_sp.model.Document;
 import com.ngu_software.capital_one_sp.model.OldFormatParser;
 
 public class Parser {
 	
+	private List<Document> doc;
 	private int filesParsed;
 
 	public Parser(File directory) {
+		
+		doc = new ArrayList<>();
 		
 		filesParsed = 0;
 		
@@ -52,7 +58,7 @@ public class Parser {
 		if (d.after(createDate(CO.NEW_FORMAT_DATE))) {
 			parseNewFormat(d, text);
 		} else {
-			new OldFormatParser(d, text);
+			doc.add(OldFormatParser.parse(d, text));
 //			parseOldFormat(d, text);
 		}
 		
