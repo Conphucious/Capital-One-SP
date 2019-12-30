@@ -22,7 +22,7 @@ public class Document {
 
 	@Override
 	public String toString() {
-		return "Document [date=" + date + ", transList=" + transList + "]";
+		return "Document [date=" + date + "\ntransList=" + transList + "]";
 	}
 	
 }

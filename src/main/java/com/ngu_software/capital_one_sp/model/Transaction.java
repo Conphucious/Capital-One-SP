@@ -18,7 +18,7 @@ public class Transaction {
 
 	@Override
 	public String toString() {
-		return "Transaction [date=" + date + ", description=" + description + ", category=" + category + ", amount="
+		return "Transaction [date=" + date + "\ndescription=" + description + "\nCategory=" + category + "\namount="
 				+ amount + "]";
 	}
 

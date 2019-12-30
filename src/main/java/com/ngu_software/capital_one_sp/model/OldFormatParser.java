@@ -12,7 +12,7 @@ public class OldFormatParser {
 	private Pattern pd = Pattern.compile("\\b(\\d{2}\\/\\d{2}\\/\\d{4})");
 	private Pattern pAct;
 	private Pattern pAmt = Pattern.compile("\\$(.*?)\\ ");
-
+	
 	public OldFormatParser(Date d, String text) {
 		Document doc = new Document(d);
 		String[] transText = findTransactions(text);
