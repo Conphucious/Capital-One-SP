@@ -1,9 +1,10 @@
 package com.ngu_software.capital_one_sp.export;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.apache.poi.sl.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -42,8 +43,12 @@ public class Excel {
 
 		}
 
-		try (FileOutputStream outputStream = new FileOutputStream("JavaBooks.xlsx")) {
+		String fileName = "JavaBooks.xlsx";
+		
+		try (FileOutputStream outputStream = new FileOutputStream(fileName)) {
 			workbook.write(outputStream);
+			Desktop d = Desktop.getDesktop();
+			d.open(new File(fileName));
 		}
 	}
 
@@ -53,16 +58,24 @@ public class Excel {
 		font.setBold(true);
 		font.setFontHeightInPoints((short) 16);
 		cellStyle.setFont(font);
+		
 		Row row = sheet.createRow(0);
+		
 		Cell cellTitle = row.createCell(1);
 		cellTitle.setCellStyle(cellStyle);
-		cellTitle.setCellValue("Title");
+		cellTitle.setCellValue("Date");
+		
 		Cell cellAuthor = row.createCell(2);
 		cellAuthor.setCellStyle(cellStyle);
-		cellAuthor.setCellValue("Author");
+		cellAuthor.setCellValue("Description");
+		
 		Cell cellPrice = row.createCell(3);
 		cellPrice.setCellStyle(cellStyle);
-		cellPrice.setCellValue("Price");
+		cellPrice.setCellValue("Category");
+		
+		Cell cellPrice2 = row.createCell(3);
+		cellPrice2.setCellStyle(cellStyle);
+		cellPrice2.setCellValue("Amount");
 	}
 
 }
