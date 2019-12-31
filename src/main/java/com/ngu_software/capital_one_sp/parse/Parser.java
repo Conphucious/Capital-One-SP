@@ -1,4 +1,4 @@
-package com.ngu_software.capital_one_sp.controller;
+package com.ngu_software.capital_one_sp.parse;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,9 +12,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
-import com.ngu_software.capital_one_sp.CO;
+import com.ngu_software.capital_one_sp.Identifier;
 import com.ngu_software.capital_one_sp.model.Document;
-import com.ngu_software.capital_one_sp.model.OldFormatParser;
 
 public class Parser {
 	
@@ -48,25 +47,26 @@ public class Parser {
 //		System.out.println("-----------------------");
 
 		// TODO Need to use regex instead of all these regex splits
-		String date = text.contains(CO.IDENTIFIER_2014) ? text.split(CO.IDENTIFIER_2014)[1].split(" ")[0]
-				: text.split(CO.IDENTIFIER_2019)[1].split("\n")[0].split("- ")[1];
+		String date = text.contains(Identifier.FORMAT_2014) ? text.split(Identifier.FORMAT_2014)[1].split(" ")[0]
+				: text.split(Identifier.FORMAT_2019)[1].split("\n")[0].split("- ")[1];
 //		System.out.println(date);
 		Date d = createDate(date.replace(",", ""));
 //		System.out.println(d);
 //		System.out.println(d.after(createDate(CO.NEW_FORMAT_DATE)) ? "Yes" : "No");
 		
-		if (d.after(createDate(CO.NEW_FORMAT_DATE))) {
-			parseNewFormat(d, text);
+		if (d.after(createDate(Identifier.FORMAT_DATE_2019))) {
+//			parseNewFormat(d, text);
+			doc.add(FormatParser2019.parse(d, text));
 		} else {
-			doc.add(OldFormatParser.parse(d, text));
+			doc.add(FormatParser2014.parse(d, text));
 //			parseOldFormat(d, text);
 		}
 		
 	}
 	
-	private void parseNewFormat(Date date, String text) {
-		
-	}
+//	private void parseNewFormat(Date date, String text) {
+//		
+//	}
 	
 //	private void parseOldFormat(Date date, String text) {
 //		Document d = new Document(date);
