@@ -4,11 +4,14 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 
+import org.apache.poi.sl.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -45,6 +48,11 @@ public class Excel {
 
 		String fileName = "JavaBooks.xlsx";
 		
+		autoSizeColumns(workbook);
+		
+		// longest text count characters and put in column size.
+//		sheet.autoSizeColumn(300);
+		
 		try (FileOutputStream outputStream = new FileOutputStream(fileName)) {
 			workbook.write(outputStream);
 			Desktop d = Desktop.getDesktop();
@@ -76,6 +84,27 @@ public class Excel {
 		Cell cellPrice2 = row.createCell(3);
 		cellPrice2.setCellStyle(cellStyle);
 		cellPrice2.setCellValue("Amount");
+	}
+	
+	/**
+	 * Ondrej Kvasnovsky
+	 * https://stackoverflow.com/questions/4611018/apache-poi-excel-how-to-configure-columns-to-be-expanded
+	 * @param workbook
+	 */
+	public static void autoSizeColumns(Workbook workbook) {
+	    int numberOfSheets = workbook.getNumberOfSheets();
+	    for (int i = 0; i < numberOfSheets; i++) {
+	    	XSSFSheet sheet = (XSSFSheet) workbook.getSheetAt(i);
+	        if (sheet.getPhysicalNumberOfRows() > 0) {
+	            Row row = sheet.getRow(sheet.getFirstRowNum());
+	            Iterator<Cell> cellIterator = row.cellIterator();
+	            while (cellIterator.hasNext()) {
+	                Cell cell = cellIterator.next();
+	                int columnIndex = cell.getColumnIndex();
+	                sheet.autoSizeColumn(columnIndex);
+	            }
+	        }
+	    }
 	}
 
 }
