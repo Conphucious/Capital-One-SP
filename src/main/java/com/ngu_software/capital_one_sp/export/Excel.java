@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.apache.poi.sl.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -24,9 +23,13 @@ public class Excel {
 		sheet.getWorkbook().createCellStyle();
 
 		createHeaderRow(sheet);
-
-		Object[][] bookData = { { "Head First Java", "Kathy Serria", 79 }, { "Effective Java", "Joshua Bloch", 36 },
-				{ "Clean Code", "Robert martin", 42 }, { "Thinking in Java", "Bruce Eckel", 35 }, };
+		
+		Object[][] bookData = { 
+				{ "Head First Java", "Kathy Serria", 79 }, 
+				{ "Effective Java", "Joshua Bloch", 36 },
+				{ "Clean Code", "Robert martin", 42 }, 
+				{ "Thinking in Java", "Bruce Eckel", 35 }, 
+				};
 
 		int rowCount = 0;
 
@@ -69,21 +72,25 @@ public class Excel {
 		
 		Row row = sheet.createRow(0);
 		
-		Cell cellTitle = row.createCell(1);
-		cellTitle.setCellStyle(cellStyle);
-		cellTitle.setCellValue("Date");
+		Cell cellHeader = row.createCell(0);
+		cellHeader.setCellStyle(cellStyle);
+		cellHeader.setCellValue("Statement Period");
 		
-		Cell cellAuthor = row.createCell(2);
-		cellAuthor.setCellStyle(cellStyle);
-		cellAuthor.setCellValue("Description");
+		Cell cellDate = row.createCell(1);
+		cellDate.setCellStyle(cellStyle);
+		cellDate.setCellValue("Date");
 		
-		Cell cellPrice = row.createCell(3);
-		cellPrice.setCellStyle(cellStyle);
-		cellPrice.setCellValue("Category");
+		Cell cellDescription = row.createCell(2);
+		cellDescription.setCellStyle(cellStyle);
+		cellDescription.setCellValue("Description");
 		
-		Cell cellPrice2 = row.createCell(3);
-		cellPrice2.setCellStyle(cellStyle);
-		cellPrice2.setCellValue("Amount");
+		Cell cellCategory = row.createCell(3);
+		cellCategory.setCellStyle(cellStyle);
+		cellCategory.setCellValue("Category");
+		
+		Cell cellAmount = row.createCell(4);
+		cellAmount.setCellStyle(cellStyle);
+		cellAmount.setCellValue("Amount");
 	}
 	
 	/**
