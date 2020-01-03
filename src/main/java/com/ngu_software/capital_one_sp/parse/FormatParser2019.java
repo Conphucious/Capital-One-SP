@@ -12,7 +12,7 @@ import com.ngu_software.capital_one_sp.model.Transaction;
 public class FormatParser2019 extends FormatParser {
 
 	private static Pattern pt = Pattern.compile("(?<=Opening Balance )(.*\n?)(?=Closing Balance )", Pattern.DOTALL);
-	private static Pattern pd = Pattern.compile("\\b(\\d{2}\\/\\d{2}\\/\\d{4})");
+	private static Pattern pd = Pattern.compile("\\b(\\d{2}\\/\\d{2}\\/\\d{4})");	// REGEX for MMM/dd/YYYY
 	private static Pattern pAct;
 	private static Pattern pAmt = Pattern.compile("\\$(.*?)\\ ");
 	
@@ -22,13 +22,13 @@ public class FormatParser2019 extends FormatParser {
 		
 		for (int i = 1; i < transText.length; i++) {
 			Date date = getDate(transText[i]);
-			String activity = getActivity(date, transText[i]);
-			double amt = getAmount(transText[i]);
-			Category category = getCategory(amt);
-			Transaction t = new Transaction(date, activity, category, amt);
-			doc.addTransaction(t);
+//			String activity = getActivity(date, transText[i]);
+//			double amt = getAmount(transText[i]);
+//			Category category = getCategory(amt);
+//			Transaction t = new Transaction(date, activity, category, amt);
+//			doc.addTransaction(t);
 		}
-		
+		// Aug 31, 2019
 		System.out.println(doc);
 		
 		return doc;
