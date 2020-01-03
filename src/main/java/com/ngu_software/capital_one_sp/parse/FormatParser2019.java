@@ -1,6 +1,5 @@
 package com.ngu_software.capital_one_sp.parse;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -10,7 +9,7 @@ import com.ngu_software.capital_one_sp.model.Category;
 import com.ngu_software.capital_one_sp.model.Document;
 import com.ngu_software.capital_one_sp.model.Transaction;
 
-public class FormatParser2019 {
+public class FormatParser2019 extends FormatParser {
 
 	private static Pattern pt = Pattern.compile("(?<=Opening Balance )(.*\n?)(?=Closing Balance )", Pattern.DOTALL);
 	private static Pattern pd = Pattern.compile("\\b(\\d{2}\\/\\d{2}\\/\\d{4})");
@@ -72,19 +71,6 @@ public class FormatParser2019 {
 		}
 		
 		return 0;
-	}
-	
-	private static Category getCategory(double amount) {
-		return amount < 0 ? Category.CREDIT : Category.DEBIT;
-	}
-
-	private static Date createDate(String date) {
-		try {
-			return new SimpleDateFormat("MM/dd/yyyy").parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 }
