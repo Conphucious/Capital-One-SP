@@ -2,9 +2,11 @@ package com.ngu_software.capital_one_sp.export;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -14,9 +16,13 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class Excel {
+import com.ngu_software.capital_one_sp.model.Document;
 
-	public static void main(String[] args) throws IOException {
+public class Excel {
+	
+	private Excel(List<Document> list) {}
+	
+	public static void export(List<Document> list) {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("Java Books");
 
@@ -60,6 +66,10 @@ public class Excel {
 			workbook.write(outputStream);
 			Desktop d = Desktop.getDesktop();
 			d.open(new File(fileName));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

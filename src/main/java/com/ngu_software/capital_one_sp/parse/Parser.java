@@ -17,12 +17,12 @@ import com.ngu_software.capital_one_sp.model.Document;
 
 public class Parser {
 	
-	private List<Document> doc;
+	private List<Document> docList;
 	private int filesParsed;
 
 	public Parser(File directory) {
 		
-		doc = new ArrayList<>();
+		docList = new ArrayList<>();
 		
 		filesParsed = 0;
 		
@@ -41,6 +41,10 @@ public class Parser {
 		System.out.println("FILES PARSED: " + filesParsed);
 	}
 
+	public List<Document> getDocList() {
+		return docList;
+	}
+	
 	public void process(File file) {
 		String text = extractDocument(file);
 //		System.out.println(text);
@@ -56,9 +60,9 @@ public class Parser {
 		
 		if (d.after(createDate(Identifier.FORMAT_DATE_2019))) {
 //			parseNewFormat(d, text);
-			doc.add(FormatParser2019.parse(d, text));
+			docList.add(FormatParser2019.parse(d, text));
 		} else {
-			doc.add(FormatParser2014.parse(d, text));
+			docList.add(FormatParser2014.parse(d, text));
 //			parseOldFormat(d, text);
 		}
 		
