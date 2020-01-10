@@ -9,7 +9,7 @@ import com.ngu_software.capital_one_sp.parse.Parser;
 public class App {
 	public static void main(String[] args) {
 		Parser p = new Parser(new File("./"));
-		Excel.export(p.getDocList());
+//		Excel.export(p.getDocList());
 		
 	}
 }

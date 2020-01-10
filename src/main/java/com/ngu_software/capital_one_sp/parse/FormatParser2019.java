@@ -11,7 +11,7 @@ import com.ngu_software.capital_one_sp.model.Transaction;
 
 public class FormatParser2019 extends FormatParser {
 
-	private static Pattern pt = Pattern.compile("(?<=Opening Balance )(.*\n?)(?=Closing Balance )", Pattern.DOTALL);
+	private static Pattern pt = Pattern.compile("(?<=CYCLE)(.*\n?)(?=360 Checking)", Pattern.DOTALL);
 	private static Pattern pd = Pattern.compile("\\b(\\d{2}\\/\\d{2}\\/\\d{4})");	// REGEX for MMM/dd/YYYY
 	private static Pattern pAct;
 	private static Pattern pAmt = Pattern.compile("\\$(.*?)\\ ");
@@ -20,8 +20,18 @@ public class FormatParser2019 extends FormatParser {
 		Document doc = new Document(d);
 		String[] transText = findTransactions(text);
 		
-		for (int i = 1; i < transText.length; i++) {
-			Date date = getDate(transText[i]);
+		test("Nov 10");
+		
+//		System.out.println(text);
+		
+		// need to filter DATE DESCRIPTION CATEGORY AMOUNT BALANCE and extraneous stuff for pages
+		// if not have MMM - dd || Debit Card Purchase (trailing) then reject.
+		
+		for (int i = 0; i < transText.length; i++) {
+			
+			System.out.println(transText[i]);
+			
+//			Date date = getDate(transText[i]);
 //			String activity = getActivity(date, transText[i]);
 //			double amt = getAmount(transText[i]);
 //			Category category = getCategory(amt);
@@ -29,7 +39,7 @@ public class FormatParser2019 extends FormatParser {
 //			doc.addTransaction(t);
 		}
 		// Aug 31, 2019
-		System.out.println(doc);
+//		System.out.println(doc);
 		
 		return doc;
 	}
@@ -42,6 +52,17 @@ public class FormatParser2019 extends FormatParser {
 			transText = text.substring(m.start(), m.end() - 1).split("\n");
 		
 		return transText;
+	}
+	
+	private static void test(String text) {
+		Pattern pDate = Pattern.compile("([a-zA-Z]{3})(\\s{1})([0-9]{2})");
+		Matcher m = pt.matcher(text);
+		String[] transText = null;
+		while (m.find())
+			transText = text.substring(m.start(), m.end() - 1).split("\n");
+		
+		for (String s : transText)
+			System.out.println(s);
 	}
 
 	private static Date getDate(String text) {

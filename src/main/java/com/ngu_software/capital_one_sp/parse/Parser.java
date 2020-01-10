@@ -62,7 +62,7 @@ public class Parser {
 //			parseNewFormat(d, text);
 			docList.add(FormatParser2019.parse(d, text));
 		} else {
-			docList.add(FormatParser2014.parse(d, text));
+//			docList.add(FormatParser2014.parse(d, text));
 //			parseOldFormat(d, text);
 		}
 		
