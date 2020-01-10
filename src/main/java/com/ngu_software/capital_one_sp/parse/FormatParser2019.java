@@ -10,11 +10,13 @@ import com.ngu_software.capital_one_sp.model.Document;
 import com.ngu_software.capital_one_sp.model.Transaction;
 
 public class FormatParser2019 extends FormatParser {
+	
+	private static final int DATE_END_CHAR_COUNT = 6;
 
 	private static Pattern pt = Pattern.compile("(?<=CYCLE)(.*\n?)(?=360 Checking)", Pattern.DOTALL);
 //	private static Pattern pd = Pattern.compile("\\b(\\d{2}\\/\\d{2}\\/\\d{4})");	// REGEX for MMM/dd/YYYY
-	private static Pattern pAct;
-	private static Pattern pAmt = Pattern.compile("\\$(.*?)\\ ");
+//	private static Pattern pAct;
+//	private static Pattern pAmt = Pattern.compile("\\$(.*?)\\ ");
 
 	public static Document parse(Date d, String text) {
 		Document doc = new Document(d);
@@ -29,7 +31,11 @@ public class FormatParser2019 extends FormatParser {
 		for (int i = 0; i < transText.length; i++) {
 
 //			System.out.println(transText[i]);
-			System.out.println(isValidLine(transText[i]));
+//			System.out.println(isValidLine(transText[i]));
+
+			if (isValidLine(transText[i])) {
+				String activity = getActivity(transText[i]);
+			}
 
 //			Date date = getDate(transText[i]);
 //			String activity = getActivity(date, transText[i]);
@@ -56,16 +62,26 @@ public class FormatParser2019 extends FormatParser {
 
 	private static boolean isValidLine(String text) {
 		if (text.length() > 6) {
-			System.out.print(text.substring(0,6));
-			
+//			System.out.print(text.substring(0, 6));
+
 			Pattern pd = Pattern.compile("^([a-zA-Z]{3})(\\s{1})([0-9]{1,2})");
-			Matcher m = pd.matcher(text.substring(0,6).trim());
-			
+			Matcher m = pd.matcher(text.substring(0, DATE_END_CHAR_COUNT).trim());
+
 			if (m.matches())
 				return true;
 		}
-		
+
 		return false;
+	}
+
+	private static String getActivity(String text) {
+		// TODO do this proper so not hardcode.
+		System.out.println(text);
+//		String[] asd = text.toUpperCase().contains(Category.DEBIT.toString()) ? text.split("Debit") : text.split("Credit");
+		String[] asd = text.split("$");
+		System.out.println(asd[0]);
+
+		return null;
 	}
 
 //	private static Date getDate(String text) {
