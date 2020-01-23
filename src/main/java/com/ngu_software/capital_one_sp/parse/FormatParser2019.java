@@ -1,6 +1,9 @@
 package com.ngu_software.capital_one_sp.parse;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,21 +30,21 @@ public class FormatParser2019 extends FormatParser {
 
 		for (int i = 0; i < transText.length; i++) {
 
-//			System.out.println(transText[i]);
+			System.out.println(transText[i]);
 //			System.out.println(isValidLine(transText[i]));
 			
-			String activity = null;
-
-			if (isValidLine(transText[i])) {
-				activity = getActivity(transText[i]);
-			}
-			
-			if (activity != null) {
-				System.out.println("> " + activity);
-//				Transaction t = new Transaction(date, activity, category, amt);
-//				doc.addTransaction(t);
-			}
-			
+//			String activity = null;
+//
+//			if (isValidLine(transText[i])) {
+//				activity = getActivity(transText[i]);
+//			}
+//			
+//			if (activity != null) {
+//				System.out.println("> " + activity);
+////				Transaction t = new Transaction(date, activity, category, amt);
+////				doc.addTransaction(t);
+//			}
+//			
 
 //			Date date = getDate(transText[i]);
 //			String activity = getActivity(date, transText[i]);
@@ -62,8 +65,17 @@ public class FormatParser2019 extends FormatParser {
 
 		while (m.find())
 			transText = text.substring(m.start(), m.end() - 1).split("\n");
+		
+		List<String> lineList = new ArrayList<>();
+		
+		for (int i = 0; i < transText.length; i++) {
+			if (transText[i].contains("$") && !transText[i].contains("Opening Balance") && !transText[i].contains("Closing Balance")) {
+				lineList.add(transText[i]);
+			}
+		}
 
-		return transText;
+		
+		return lineList.stream().toArray(String[] :: new);
 	}
 
 	private static boolean isValidLine(String text) {
@@ -81,10 +93,8 @@ public class FormatParser2019 extends FormatParser {
 	}
 
 	private static String getActivity(String text) {
-		// TODO do this proper so not hardcode.
-//		String[] asd = text.toUpperCase().contains(Category.DEBIT.toString()) ? text.split("Debit") : text.split("Credit");
-		String[] asd = text.split("$");
-		return asd[0].contains("$") && !asd[0].contains("Opening Balance") && !asd[0].contains("Closing Balance") ? asd[0].replace("Debit Card Purchase - ", "") : null;
+		// TODO this is not activity. Need to reparse
+		return text.contains("$") && !text.contains("Opening Balance") && !text.contains("Closing Balance") ? text.replace("Debit Card Purchase - ", "") : null;
 	}
 
 //	private static Date getDate(String text) {
