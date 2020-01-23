@@ -34,10 +34,10 @@ public class FormatParser2019 extends FormatParser {
 
 			if (isValidLine(transText[i])) {
 				activity = getActivity(transText[i]);
-				System.out.println("> " + activity);
 			}
 			
 			if (activity != null) {
+				System.out.println("> " + activity);
 //				Transaction t = new Transaction(date, activity, category, amt);
 //				doc.addTransaction(t);
 			}
@@ -84,8 +84,7 @@ public class FormatParser2019 extends FormatParser {
 		// TODO do this proper so not hardcode.
 //		String[] asd = text.toUpperCase().contains(Category.DEBIT.toString()) ? text.split("Debit") : text.split("Credit");
 		String[] asd = text.split("$");
-		
-		return asd[0].contains("$") && !asd[0].contains("Opening Balance") ? asd[0] : null;
+		return asd[0].contains("$") && !asd[0].contains("Opening Balance") && !asd[0].contains("Closing Balance") ? asd[0].replace("Debit Card Purchase - ", "") : null;
 	}
 
 //	private static Date getDate(String text) {
