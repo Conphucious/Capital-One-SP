@@ -29,14 +29,19 @@ public class FormatParser2019 extends FormatParser {
 
 //			System.out.println(transText[i]);
 //			System.out.println(isValidLine(transText[i]));
+			
+			String activity = null;
 
 			if (isValidLine(transText[i])) {
-				String activity = getActivity(transText[i]);
-				if (activity == null)
-					break;
-				
+				activity = getActivity(transText[i]);
 				System.out.println("> " + activity);
 			}
+			
+			if (activity != null) {
+//				Transaction t = new Transaction(date, activity, category, amt);
+//				doc.addTransaction(t);
+			}
+			
 
 //			Date date = getDate(transText[i]);
 //			String activity = getActivity(date, transText[i]);
@@ -77,10 +82,8 @@ public class FormatParser2019 extends FormatParser {
 
 	private static String getActivity(String text) {
 		// TODO do this proper so not hardcode.
-		System.out.println(text);
 //		String[] asd = text.toUpperCase().contains(Category.DEBIT.toString()) ? text.split("Debit") : text.split("Credit");
 		String[] asd = text.split("$");
-		System.out.println(asd[0] + "_");
 		
 		return asd[0].contains("$") && !asd[0].contains("Opening Balance") ? asd[0] : null;
 	}
