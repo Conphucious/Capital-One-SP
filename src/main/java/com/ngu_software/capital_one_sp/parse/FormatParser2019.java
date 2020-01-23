@@ -1,13 +1,10 @@
 package com.ngu_software.capital_one_sp.parse;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.ngu_software.capital_one_sp.model.Category;
 import com.ngu_software.capital_one_sp.model.Document;
-import com.ngu_software.capital_one_sp.model.Transaction;
 
 public class FormatParser2019 extends FormatParser {
 	
@@ -35,6 +32,10 @@ public class FormatParser2019 extends FormatParser {
 
 			if (isValidLine(transText[i])) {
 				String activity = getActivity(transText[i]);
+				if (activity == null)
+					break;
+				
+				System.out.println("> " + activity);
 			}
 
 //			Date date = getDate(transText[i]);
@@ -79,9 +80,9 @@ public class FormatParser2019 extends FormatParser {
 		System.out.println(text);
 //		String[] asd = text.toUpperCase().contains(Category.DEBIT.toString()) ? text.split("Debit") : text.split("Credit");
 		String[] asd = text.split("$");
-		System.out.println(asd[0]);
-
-		return null;
+		System.out.println(asd[0] + "_");
+		
+		return asd[0].contains("$") && !asd[0].contains("Opening Balance") ? asd[0] : null;
 	}
 
 //	private static Date getDate(String text) {

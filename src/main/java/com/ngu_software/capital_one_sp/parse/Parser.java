@@ -17,6 +17,8 @@ import com.ngu_software.capital_one_sp.model.Document;
 
 public class Parser {
 	
+	// TODO credit card statements are different than debit card.
+	
 	private List<Document> docList;
 	private int filesParsed;
 
