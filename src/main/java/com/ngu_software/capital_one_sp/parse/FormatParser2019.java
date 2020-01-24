@@ -22,7 +22,7 @@ public class FormatParser2019 extends FormatParser {
 		Document doc = new Document(d);
 		String[] transText = findTransactions(text);
 
-		System.out.println(text);
+//		System.out.println(text);
 
 		// need to filter DATE DESCRIPTION CATEGORY AMOUNT BALANCE and extraneous stuff
 		// for pages
@@ -84,9 +84,7 @@ public class FormatParser2019 extends FormatParser {
 	}
 
 	private static String getActivity(String text) {
-		// TODO this is not activity. Need to reparse
-		System.out.println(text.substring(6, text.length()).trim());
-		return text.contains("$") && !text.contains("Opening Balance") && !text.contains("Closing Balance") ? text.replace("Debit Card Purchase - ", "") : null;
+		return text.substring(6, text.length()).trim().split(" - \\$| \\+ \\$")[0];
 	}
 
 //	private static Date getDate(String text) {
