@@ -22,7 +22,7 @@ public class FormatParser2019 extends FormatParser {
 		Document doc = new Document(d);
 		String[] transText = findTransactions(text);
 
-//		System.out.println(text);
+		System.out.println(text);
 
 		// need to filter DATE DESCRIPTION CATEGORY AMOUNT BALANCE and extraneous stuff
 		// for pages
@@ -30,22 +30,13 @@ public class FormatParser2019 extends FormatParser {
 
 		for (int i = 0; i < transText.length; i++) {
 
-			System.out.println(transText[i]);
-//			System.out.println(isValidLine(transText[i]));
+//			System.out.println(transText[i]);
+			if (isValidLine(transText[i])) {
+				String activity = getActivity(transText[i]);
+			}
 			
-//			String activity = null;
-//
-//			if (isValidLine(transText[i])) {
-//				activity = getActivity(transText[i]);
-//			}
-//			
-//			if (activity != null) {
-//				System.out.println("> " + activity);
-////				Transaction t = new Transaction(date, activity, category, amt);
-////				doc.addTransaction(t);
-//			}
-//			
-
+			// need to strip MMM dd and add on year from date d
+			
 //			Date date = getDate(transText[i]);
 //			String activity = getActivity(date, transText[i]);
 //			double amt = getAmount(transText[i]);
@@ -94,6 +85,7 @@ public class FormatParser2019 extends FormatParser {
 
 	private static String getActivity(String text) {
 		// TODO this is not activity. Need to reparse
+		System.out.println(text.substring(6, text.length()).trim());
 		return text.contains("$") && !text.contains("Opening Balance") && !text.contains("Closing Balance") ? text.replace("Debit Card Purchase - ", "") : null;
 	}
 
