@@ -1,7 +1,10 @@
 package com.ngu_software.capital_one_sp.parse;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -22,7 +25,7 @@ public class FormatParser2019 extends FormatParser {
 		Document doc = new Document(d);
 		String[] transText = findTransactions(text);
 
-		System.out.println(text);
+//		System.out.println(text);
 
 		// need to filter DATE DESCRIPTION CATEGORY AMOUNT BALANCE and extraneous stuff
 		// for pages
@@ -39,9 +42,8 @@ public class FormatParser2019 extends FormatParser {
 			}
 			
 			activity = getActivity(transText[i]);
-			Date date = getDate(transText[i]);
-			
-			// need to strip MMM dd and add on year from date d
+			Date date = getDate(d, transText[i]);
+			System.out.println(date.toString());
 			
 //			String activity = getActivity(date, transText[i]);
 //			double amt = getAmount(transText[i]);
@@ -87,14 +89,17 @@ public class FormatParser2019 extends FormatParser {
 		return text.substring(6, text.length()).trim().split(" - \\$| \\+ \\$")[0];
 	}
 
-	private static Date getDate(String text) {
+	private static Date getDate(Date d, String text) {
 		Matcher m = pd.matcher(text);
-		System.out.println("< " + text);
 		while (m.find()) {
-			System.out.println("> " + text.substring(m.start(), m.end()));
-			return null;
+			String date = text.substring(m.start(), m.end()) + " " + d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
+// TODO createDate method needs update... Check with diff regex?
+			try {
+				return new SimpleDateFormat("MMM dd yyyy").parse(date);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
-//			return createDate(text.substring(m.start(), m.end()));
 		
 		return null;
 	}
