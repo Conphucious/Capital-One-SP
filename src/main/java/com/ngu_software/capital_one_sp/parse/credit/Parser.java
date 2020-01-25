@@ -1,4 +1,4 @@
-package com.ngu_software.capital_one_sp.parse;
+package com.ngu_software.capital_one_sp.parse.credit;
 
 import java.io.File;
 import java.io.IOException;
