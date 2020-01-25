@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import com.ngu_software.capital_one_sp.model.Category;
 import com.ngu_software.capital_one_sp.model.Document;
 import com.ngu_software.capital_one_sp.model.Transaction;
+import com.ngu_software.capital_one_sp.parse.debit.FormatParser;
 
 public class FormatParser2019 extends FormatParser {
 	
