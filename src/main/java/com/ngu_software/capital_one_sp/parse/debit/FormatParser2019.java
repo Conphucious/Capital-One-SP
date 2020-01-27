@@ -17,10 +17,11 @@ public class FormatParser2019 extends FormatParser {
 	
 	private static final int DATE_END_CHAR_COUNT = 6;
 
-	private static Pattern pt = Pattern.compile("(?<=CYCLE)(.*\n?)(?=360 Checking)", Pattern.DOTALL);
-	private static Pattern pd = Pattern.compile("[a-zA-Z]{3} [0-9]{1,2}");	// REGEX for MMM/dd/YYYY
+	private static Pattern transactionPat = Pattern.compile("(?<=CYCLE)(.*\n?)(?=360 Checking)", Pattern.DOTALL);
+	private static Pattern datePat = Pattern.compile("[a-zA-Z]{3} [0-9]{1,2}");	// REGEX for MMM/dd/YYYY
+	private static Pattern linePat = Pattern.compile("^([a-zA-Z]{3})(\\s{1})([0-9]{1,2})");
+	private static String activityPat = " - \\$| \\+ \\$";
 	// TODO change activity to use pattern
-//	private static Pattern pAct;
 	private static Pattern pAmt = Pattern.compile("(?<= \\$)(.*?)(?=\\$)");
 	
 	public static Document parse(Date d, String text) {
@@ -45,7 +46,7 @@ public class FormatParser2019 extends FormatParser {
 	}
 
 	private static String[] findTransactions(String text) {
-		Matcher m = pt.matcher(text);
+		Matcher m = transactionPat.matcher(text);
 		String[] transText = null;
 
 		while (m.find())
@@ -77,7 +78,7 @@ public class FormatParser2019 extends FormatParser {
 	}
 
 	private static Date getDate(Date d, String text) {
-		Matcher m = pd.matcher(text);
+		Matcher m = datePat.matcher(text);
 		while (m.find()) {
 			String date = text.substring(m.start(), m.end()) + " " + d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
 			// TODO createDate method needs update... Check with diff regex?
